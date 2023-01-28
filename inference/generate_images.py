@@ -20,6 +20,7 @@ import BigGAN_PyTorch.utils as biggan_utils
 from data_utils.datasets_common import pil_loader
 import torchvision.transforms as transforms
 import time
+from PIL import Image
 
 
 def get_data(root_path, model, resolution, which_dataset, visualize_instance_images):
@@ -131,12 +132,12 @@ def main(test_config):
         and test_config["trained_dataset"] == "imagenet"
         else ""
     )
-    exp_name = "%s_%s_%s_res%i%s" % (
+    exp_name = "%s_%s_%s_res%i" % (
         test_config["model"],
         test_config["model_backbone"],
         test_config["trained_dataset"],
         test_config["resolution"],
-        suffix,
+        # suffix,
     )
     device = "cuda"
     ### -- Data -- ###
@@ -189,6 +190,9 @@ def main(test_config):
         row = []
         for j in range(0, test_config["num_imgs_gen"]):
             subplot_idx = (i * test_config["num_imgs_gen"]) + j
+            img = Image.fromarray(np.uint8(all_generated_images[subplot_idx]))
+            img.save("%s/conditional%d_sample%d_idx%d.png" % (test_config["save_path"], i, j,subplot_idx))
+            print("save %d class %d th sample" % (i, j))
             row.append(all_generated_images[subplot_idx])
         row = np.concatenate(row, axis=1)
         big_plot.append(row)
@@ -213,29 +217,29 @@ def main(test_config):
         ).astype(np.uint8)
         big_plot = np.concatenate([all_gt_imgs, white_space, big_plot], axis=1)
 
-    plt.figure(
-        figsize=(
-            5 * test_config["num_imgs_gen"],
-            5 * test_config["num_conditionings_gen"],
-        )
-    )
-    plt.imshow(big_plot)
-    plt.axis("off")
+    # plt.figure(
+    #     figsize=(
+    #         5 * test_config["num_imgs_gen"],
+    #         5 * test_config["num_conditionings_gen"],
+    #     )
+    # )
+    # plt.imshow(big_plot)
+    # plt.axis("off")
 
-    fig_path = "%s_Generations_with_InstanceDataset_%s%s%s_zvar%0.2f.png" % (
-        exp_name,
-        test_config["which_dataset"],
-        "_index" + str(test_config["index"])
-        if test_config["index"] is not None
-        else "",
-        "_class_idx" + str(test_config["swap_target"])
-        if test_config["swap_target"] is not None
-        else "",
-        test_config["z_var"],
-    )
-    plt.savefig(fig_path, dpi=600, bbox_inches="tight", pad_inches=0)
+    # fig_path = "%s_Generations_with_InstanceDataset_%s%s%s_zvar%0.2f.png" % (
+    #     exp_name,
+    #     test_config["which_dataset"],
+    #     "_index" + str(test_config["index"])
+    #     if test_config["index"] is not None
+    #     else "",
+    #     "_class_idx" + str(test_config["swap_target"])
+    #     if test_config["swap_target"] is not None
+    #     else "",
+    #     test_config["z_var"],
+    # )
+    # plt.savefig(fig_path, dpi=600, bbox_inches="tight", pad_inches=0)
 
-    print("Done! Figure saved as %s" % (fig_path))
+    # print("Done! Figure saved as %s" % (fig_path))
 
 
 if __name__ == "__main__":
@@ -290,14 +294,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num_imgs_gen",
         type=int,
-        default=5,
+        default=50,
         help="Number of images to generate with different noise vectors, "
         "given an input conditioning.",
     )
     parser.add_argument(
         "--num_conditionings_gen",
         type=int,
-        default=5,
+        default=999,
         help="Number of conditionings to generate with."
         " Use `num_imgs_gen` to control the number of generated samples per conditioning",
     )
@@ -330,6 +334,12 @@ if __name__ == "__main__":
         default="",
         help="Only needed if visualize_instance_images=True."
         " Folder where to find the dataset ground-truth images.",
+    )
+    parser.add_argument(
+        "--save_path",
+        type=str,
+        default="",
+        help=" Folder where to save generated images.",
     )
 
     config = vars(parser.parse_args())
