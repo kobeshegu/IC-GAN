@@ -38,7 +38,7 @@ IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm"]
 
 def is_image_file(filename):
     """Checks if a file is an image.
-
+import
     Args:
         filename (string): path to a file
 
@@ -715,7 +715,7 @@ class ILSVRC_HDF5_feats(data.Dataset):
 
         self.sample_nns = [[] for _ in range(self.num_imgs)]
         self.sample_nn_radius = np.zeros(self.num_imgs, dtype=float)
-
+        # import pdb; pdb.set_trace()
         if faiss_lib:
             cpu_index = faiss.IndexFlatL2(feat_sz)
             if gpu:
@@ -736,6 +736,7 @@ class ILSVRC_HDF5_feats(data.Dataset):
             )
             print("Computed distances.")
             knn_radii, kth_values_arg = self._get_kth_value_accurate(dists, k_nn)
+            self.kth_values = np. sqrt(kth_values_arg)
         for i_sample in range(self.num_imgs):
             knns = kth_values_arg[i_sample]
             # Discarding the input sample, also seen as the 0-NN.
@@ -766,6 +767,7 @@ class ILSVRC_HDF5_feats(data.Dataset):
         indices = np.argpartition(distances, k - 1, axis=axis)[..., :k]
         k_smallests = np.take_along_axis(distances, indices, axis=axis)
         kth_values = k_smallests.max(axis=axis)
+
         return kth_values, indices
 
     def _get_image(self, index):

@@ -333,8 +333,11 @@ def run(config):
         print(
             "Saved COCO index images for evaluation set (in order of appearance in the hdf5 file)"
         )
+        test_part_path = "coco_stuff_val_indexes"
+        os.makedirs(os.path.join(config["out_path"], test_part_path), exist_ok=True)
+        coco_stuff_part_path = os.path.join(config["out_path"], test_part_path)
         np.save(
-            os.path.join("coco_stuff_val_indexes", "cocostuff_val2_all_idxs"),
+            os.path.join(coco_stuff_part_path, "cocostuff_val2_all_idxs"),
             np.concatenate(all_image_ids),
         )
 
