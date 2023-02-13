@@ -432,7 +432,7 @@ def training_loop(
             if instance_cond and class_cond:
                 phase_real_img, phase_real_c, phase_real_h, _ = batch
             elif instance_cond:
-                phase_real_img, phase_real_h, _ = batch
+                phase_real_img, phase_real_h, _ = batch # phase_real_h: [batch_size, 2048]
                 phase_real_c = torch.empty([batch_gpu, G.c_dim], device=device)
             elif class_cond:
                 phase_real_img, phase_real_c = batch
@@ -487,6 +487,7 @@ def training_loop(
             phase.module.requires_grad_(True)
 
             # Accumulate gradients over multiple rounds.
+            # real_h: [batch_size, 2048], gen_h: [batch_size, 2048]
             for round_idx, (real_img, real_c, real_h, gen_z, gen_c, gen_h) in enumerate(
                 zip(
                     phase_real_img,

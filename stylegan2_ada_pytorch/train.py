@@ -784,7 +784,8 @@ def main(args, outdir, master_node="", port=40000, dry_run=False, **config_kwarg
     else:
         # Launch processes.
         print("Launching processes...")
-        torch.multiprocessing.set_start_method("spawn")
+        # __spec__ = "ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>)"
+        # torch.multiprocessing.set_start_method("spawn")
         with tempfile.TemporaryDirectory() as temp_dir:
             if args.num_gpus == 1:
                 subprocess_fn(rank=0, args=args, temp_dir=temp_dir)
