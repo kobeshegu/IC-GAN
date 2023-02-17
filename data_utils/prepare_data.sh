@@ -3,7 +3,7 @@
 # All rights reserved.
 
 resolution=128 # 64,128,256
-dataset='coco' #'imagenet', 'imagenet_lt',  'coco', [a transfer dataset, such as 'cityscapes']
+dataset='ffhq' #'imagenet', 'imagenet_lt',  'coco', [a transfer dataset, such as 'cityscapes']
 out_path='/mnt/petrelfs/yangmengping/ICGAN/coco'
 path_imnet=''
 path_swav='/mnt/petrelfs/yangmengping/ckpt/ICGAN/swav_800ep_pretrain.pth.tar'
@@ -54,6 +54,7 @@ elif [ $dataset = 'coco' ]; then
   done
 # Transfer datasets
 else
+  data_path = 
   python3 data_utils/make_hdf5.py --resolution $resolution --which_dataset $dataset --split 'train' --data_root $3 --feature_extractor 'classification' --out_path $out_path
     # Compute NNs
   python3 data_utils/make_hdf5.py --resolution $resolution --which_dataset $dataset --split 'train' --data_root $3 --feature_extractor 'selfsupervised' --pretrained_model_path $path_swav --save_features_only --out_path $out_path
