@@ -1,9 +1,9 @@
 {
-  "exp_name": "icgan_stylegan2_coco_res128",
+  "exp_name": "icgan_stylegan2_coco_res128_debug",
   "data": "COCO128_xy.hdf5",
   "root_feats": "COCO128_feats_selfsupervised_resnet50.hdf5",
   "root_nns": "COCO128_feats_selfsupervised_resnet50_nn_k5.hdf5",
-  "gpus": 2,
+  "gpus": 1,
   "slurm": false,
   "aug": "noaug",
   "lrate": 0.0025,
