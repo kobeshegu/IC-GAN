@@ -402,7 +402,7 @@ def run_latent_ddim():
     conf = latent_diffusion128_config(conf)
     conf = latent_2048_batch_size(conf)
     conf = latent_mlp_2048_norm_20layers(conf)
-    conf.total_samples = 1_000_000
+    conf.total_samples = 100_000_000
     conf.latent_beta_scheduler = 'const0.008'
     conf.latent_loss_type = LossType.l1
     conf.name = 'latent_ddim'
