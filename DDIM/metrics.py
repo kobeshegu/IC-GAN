@@ -65,13 +65,13 @@ def evaluate_l1(
             conf, 
             model, 
             x_T,
-            latent_sampler=latent_sampler,
+            latent_sampler=sampler,
             )
         norm_imgs = (imgs + 1) / 2
         norm_pred_imgs = (pred_noise + 1) / 2
         L1_score = (norm_imgs - norm_pred_imgs).mean(dim=1)
         scores['l1'].append(L1_score)
-        scores['psnr'].append(psnr_feat(norm_imgs, norm_pred_imgs))
+        scores['psnr_feat'].append(psnr_feat(norm_imgs, norm_pred_imgs))
     for key in scores.keys():
         scores[key] = torch.cat(scores[key]).float()
     model.train()
@@ -102,7 +102,7 @@ def psnr_feat(feat1, feat2):
     """
     v_max = 1.
     # (n,)
-    mse = torch.mean((img1 - img2)**2, dim=[1])
+    mse = torch.mean((feat1 - feat2)**2, dim=[1])
     return 20 * torch.log10(v_max / torch.sqrt(mse))
 
 def evaluate_lpips(

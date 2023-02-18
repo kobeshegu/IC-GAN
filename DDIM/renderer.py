@@ -26,7 +26,7 @@ def render_uncondition_feat(conf: TrainConfig,
             latent_noise = latent_noise.clip(-1, 1)
 
         cond = latent_sampler.sample(
-            model=model.latent_net,
+            model=model,
             noise=latent_noise,
             clip_denoised=conf.latent_clip_sample,
         )

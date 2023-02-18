@@ -445,7 +445,7 @@ class LitModel(pl.LightningModule):
             self.conf.batch_size_effective
                 ):
             print(f'eval l1 loss ema @ {self.num_samples}')
-            l1(self.model)
+            l1(self.model,'')
 
     def configure_optimizers(self):
         out = {}

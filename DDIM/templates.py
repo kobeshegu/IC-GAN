@@ -373,7 +373,7 @@ def latent_diffusion_config(conf: TrainConfig):
     conf.latent_rescale_timesteps = False
     conf.latent_clip_sample = False
     conf.latent_T_eval = 20
-    conf.latent_znormalize = True
+    conf.latent_znormalize = False
     conf.total_samples = 100_000
     conf.sample_every_samples = 20_000
     conf.eval_every_samples = 20_000
